@@ -1,64 +1,148 @@
-# Arabic Letters Support For Unity
-This plugin allows you to use accurate and correct Arabic text in your game or 3D application. Supports Tashkeel and Hindu numbers. Supports 4 Persian Characters.
+# 🌙 Arabic Support for Unity - Enhanced Edition
 
-You can find it in the Unity Asset Store here: https://www.assetstore.unity3d.com/en/#!/content/2674
+> *Making Arabic text in Unity as smooth as butter... or should I say, as smooth as زبدة?* 🧈
 
-Also, check out [UPersian](https://github.com/ElectroGryphon/EGGA/tree/master/UPersian). It uses this plugin to create these GUI items: 
-1. RTL Text 
-2. RTL Input field
-3. RTL Buton
-4. RTL Checkbox
+A friendly fork of [Konash's Arabic Support](https://github.com/Konash/arabic-support-unity) with extra goodies for TextMeshPro lovers! ✨
 
-Assalamu Alaikum! (Peace upon you all!)
-This asset will enable you to use Arabic Words in your game. 
-There are two main problems to address here:
-1.	Arabic Letters orders. It's like reading "Hello" as "olleH".
-السلام  is displayed as:  م ا ل س ل ا
-2.	Arabic Letters connectivity. As seen here: “السلام  is displayed as:  م ا ل س ل ا” the letters are no disconnected.
+## 💝 What's This All About?
 
-# Building The Project
-You only need to use ArabicSupport.cs file in your project. So there is no real need for building. The rest of the files there are just for demonstration in a Unity Project in expectation of developers wanting to demo the extra features they add to the plugin.
+Arabic text can be tricky in Unity - it reads right-to-left, letters connect in fancy ways, and sometimes things just look... backwards. This enhanced version takes the original Arabic Support library and wraps it in a cozy blanket of TextMeshPro goodness!
 
-The project should work on most unity versions for now until we start adding features that are available only in later unity versions.
+## ✨ What Makes This Fork Special?
 
-# Testing The Project
-Usually the project is updated once a flaw is discovered, or something new needs to be added.
-In the scenes folder there is "Test Cases.unity" file that includes all previous tested words. 
-## Follow the following steps:
-1. Make changes.
-2. Go and see the test case scene and check if something broke. (Sadly you'll have to know basic Arabic writing to know this)
-3. Add new words to the scene that you found that broke so others can also test it.
+### 🎯 Auto-Magic TextMeshPro Integration
+- **Drop and forget!** Just add a TMP_Text component and boom - Arabic support automatically attaches itself
+- No more manual setup for every single text object (your wrists will thank you!)
 
-You can add your own test cases scene if it makes sense to you.
+### 🔄 Smart Processing Modes
+Choose your adventure:
+- **Once At Awake**: Set it and forget it! Perfect for static text
+- **Real-Time Detection**: Watches your text like a hawk 🦅 and fixes it automatically
+- **On Demand Only**: For when you like to be in control (we respect that!)
 
-# Notes
-1.	You'll need to use a font that got Arabic letters in it.
-2.	You'll need to modify the text attribute through script. This does not fix the problem if you write directly in a text field.
-3.	The script is written in C#.
-4.	The code is a little messy so please excuse me.
+### ⌨️ Typing Effect Friendly
+Got a cool typing animation? No problem!
+```csharp
+handler.StartTypingEffect();
+// Do your typing magic here...
+handler.EndTypingEffect(); // Auto-processes when done!
+```
 
-# Steps
-1.	To use the Unity Arabic Support asset inside a script, use: "using ArabicSupport;"
-2.	After using the using statement, use the following method (returns a string):	ArabicFixer.Fix(textToBeFixed);
-3.	And you're done! You can use the alternative: ArabicFixer(string, tashkeel, hindoNumbers) for more customization options.
+### 🛡️ Better Error Handling
+- Safe character-by-character processing if something goes wrong
+- Detailed error logging (because we care about you knowing what happened)
+- Won't crash your game if it encounters a grumpy Unicode character
 
-# Extras
-1.	You can now show Harakat such as ًٌٍَُِ~ّْ using the plugin. Also, you have option to remove the Harakat realtime by setting the plugin to ignore the Harakat by using the ShowHarakat() HideHarakat() Methods. Please note that not all fonts support the Harakat well. Arial font and Arabic Typesetting font were tested and words well. The default is to show the Harakat.
-2.	You can now use hindu numbers instead of the default of the font if needed. (٠	١	٢	٣	٤	٥	٦	٧	٨	٩) Use the UseHinduNumbers() and UseDeafultNumbers() method to switch your settings. The default value is not to use hindu numbers.
-3.	4 Persian characters have been added (3.0): چژ گپ
-4. Multiple lines are supported. However, you have to supply the breaklines to the Fix method yourself.
+### 🎮 Edit Mode Preview
+See your Arabic text correctly formatted right in the Unity Editor - no need to hit play!
 
-# Issues
-## The text is not showing on your build?
-1. Click on the font you are using in the project field.
-2. In the inspector, find the "Character" field.
-3. Change it from dynamic to unicode.
+## 🚀 Quick Start
 
-I hope you'll find this asset useful and enjoy using it!
+### Installation
+1. Import the original Arabic Support package (we're standing on the shoulders of giants here!)
+2. Add these three scripts to your project:
+   - `ArabicSupport.cs` (if not already there)
+   - `ArabicTextHandler.cs`
+   - `TMP_AutoAttach.cs`
 
-# Contact
-If you need any help with the asset, please contact me at: abdullah.konash@gmail.com or https://twitter.com/Konash
+### Basic Usage
 
-I'll be very happy if you showed me the game you used the plugin with! I don't mind a free copy of it either! 
+**The Lazy Way (Recommended!)** 😴
+1. Add a TextMeshPro component to your GameObject
+2. Done! The `ArabicTextHandler` attaches itself automatically
+3. Type some Arabic text
+4. Watch the magic happen! ✨
 
-Abdullah Konash
+**The Control Freak Way** 🎮
+```csharp
+ArabicTextHandler handler = GetComponent<ArabicTextHandler>();
+handler.processingMode = ProcessingMode.OnDemandOnly;
+handler.textComponent.text = "مرحبا بالعالم";
+handler.ForceProcessText();
+```
+
+**For Typing Effects** ⌨️
+```csharp
+handler.StartTypingEffect();
+foreach (char c in arabicText)
+{
+    handler.SetTextWithoutProcessing(currentText + c);
+    yield return new WaitForSeconds(0.05f);
+}
+handler.EndTypingEffect();
+```
+
+## ⚙️ Configuration Options
+
+### In The Inspector
+- **Processing Mode**: When to fix that Arabic text
+- **Show Tashkeel**: Keep those beautiful diacritical marks (◍•ᴗ•◍)
+- **Use Hindu Numbers**: ٠١٢٣٤٥٦٧٨٩ instead of 0123456789
+- **Startup Delay**: Give your scene a moment to breathe before processing
+- **Error Handling**: Skip problematic characters or let exceptions fly
+
+### Programmatic Control
+```csharp
+// Pause processing during sensitive operations
+handler.pauseProcessing = true;
+
+// Change modes on the fly
+handler.SetProcessingMode(ProcessingMode.RealTimeDetection);
+
+// Manual override
+handler.ForceProcessText();
+
+// Reset if things get weird
+handler.ResetState();
+```
+
+## 🎨 Features
+
+- ✅ Supports Arabic, Persian, and Urdu
+- ✅ Handles Tashkeel (diacritical marks)
+- ✅ Hindu-Arabic numerals support
+- ✅ Mixed Arabic/English text
+- ✅ Automatic TextMeshPro detection
+- ✅ Real-time text monitoring
+- ✅ Typing effect support
+- ✅ Edit mode preview
+- ✅ Error recovery
+- ✅ Multi-line text support
+- ✅ Smart punctuation handling
+
+## 🐛 Troubleshooting
+
+**Text not processing?**
+- Check if `pauseProcessing` is false
+- Make sure you waited for `startupDelay` (default: 0.1s)
+- Try hitting "Force Process Text" button in inspector
+
+**Getting stuck in a loop?**
+- Hit the "Reset State" button in inspector
+- Check your processing mode settings
+
+**Still having issues?**
+- Check the `lastError` field in inspector for clues
+- Enable `logErrors` for detailed console messages
+
+## 🙏 Credits & Thanks
+
+- **Original Arabic Support**: Created by the amazing [Abdullah Konash](https://github.com/Konash)
+- **This Fork**: Enhanced with TextMeshPro integration and quality-of-life improvements
+- **You**: For using this and hopefully making something cool! 🎮
+
+## 📜 License
+
+MIT License - Same as the original! Feel free to use, modify, and share. Just remember to spread the love and credit the original work.
+
+## 💌 Final Words
+
+Making games in Arabic (or Persian, or Urdu) should be easy and fun. This fork tries to make that happen with as little friction as possible. If you make something cool with this, I'd love to see it!
+
+Happy coding, and may your text always flow in the right direction! 🌟
+
+---
+
+*"لا تكن صعباً" - Don't be difficult!* 
+
+(That's what this fork is all about - making things not difficult! 😊)
